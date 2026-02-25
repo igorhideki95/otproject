@@ -1,0 +1,44 @@
+name: Architecture Validation
+
+on:
+  pull_request:
+    paths:
+      - 'crystalserver/**'
+      - 'otclient/**'
+      - 'website/**'
+      - 'agents/**'
+  push:
+    branches: [ main ]
+    paths:
+      - 'crystalserver/**'
+      - 'otclient/**'
+      - 'website/**'
+      - 'agents/**'
+
+jobs:
+  governance-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Ownership enforcement
+        run: python agents/tools/architecture_guard.py ownership --strict --base-ref origin/main
+
+      - name: Cross-agent dependency monitor
+        run: python agents/tools/architecture_guard.py deps --strict
+
+      - name: Change impact engine
+        run: python agents/tools/architecture_guard.py impact --base-ref origin/main
+
+      - name: Architecture drift detector
+        run: python agents/tools/architecture_guard.py drift --baseline agents/automation/baseline.json --strict
+
+      - name: Continuous validation report
+        run: python agents/tools/architecture_guard.py report
