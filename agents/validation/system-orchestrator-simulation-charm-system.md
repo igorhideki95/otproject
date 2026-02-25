@@ -1,146 +1,135 @@
-# Intelligent Orchestration Simulation
+# System Orchestrator Simulation
 
 ## Request
 Create Charm System
 
-## Feature Type
-Hybrid system
-
-## Activated agents
-- code-review-guardian
-- crystalserver-data-gameplay
-- crystalserver-gameplay-runtime
-- crystalserver-network-session
-- crystalserver-persistence-scripting
-- crystalserver-platform-delivery
-- otclient-assets-distribution
-- otclient-engine-runtime
-- otclient-ui-modules
-- performance-auditor
-- project-architect
-- security-auditor
-- system-orchestrator
-
-## Layer impact
-- Server Gameplay Runtime
-- Datapack Content
-- Persistence + Schema
-- Protocol + Transport
-- OTClient UI + UX
-
-## Risk score
-- Level: Critical
-- Score: 100
-
-## Required approvals
+## Activated Agents
+- **System Orchestrator** (coordination owner)
+- CrystalServer Gameplay Runtime Agent
+- CrystalServer Persistence Scripting Agent
+- CrystalServer Data Gameplay Agent
+- CrystalServer Network Session Agent
+- OTClient Engine Runtime Agent
+- OTClient UI Modules Agent
+- CrystalServer Platform Delivery Agent
 - Code Review Guardian
-- CrystalServer Data Gameplay
-- CrystalServer Gameplay Runtime
-- CrystalServer Network Session
-- CrystalServer Persistence Scripting
-- CrystalServer Platform Delivery
-- OTClient Engine Runtime
-- OTClient UI Modules
-- Performance Auditor
-- Project Architect
 - Security Auditor
+- Performance Auditor
+- Project Architect (escalation)
 
-## Generated boilerplate structure
-- `crystalserver/src/game/systems/charm_system/charm_system_system.hpp`
-- `crystalserver/src/game/systems/charm_system/charm_system_system.cpp`
-- `crystalserver/src/io/charm_system/io_charm_system.hpp`
-- `crystalserver/src/io/charm_system/io_charm_system.cpp`
-- `crystalserver/src/server/network/protocol/protocolgame.cpp`
-- `crystalserver/src/server/network/protocol/protocolgame.hpp`
+## Impacted Layers
+1. **Server Gameplay Runtime**: charm rules, trigger hooks, combat interactions, creature death/kill attribution.
+2. **Persistence Layer**: player charm points/unlocks, migration-safe storage mapping, load/save symmetry.
+3. **Datapack Content Layer**: charm definitions, tuning values, script events, balancing tables.
+4. **Protocol Layer**: packets/opcodes for charm state sync, unlock actions, updates.
+5. **Client Engine Runtime**: packet parse/send, feature flags, model updates.
+6. **Client UI Modules**: charm window, unlock flow, feedback, localization hooks.
+7. **Platform/Schema Layer**: schema updates, migration docs, release notes and compatibility guidance.
+
+## Required Files (Path-Level Target Set)
+### CrystalServer gameplay runtime
+- `crystalserver/src/game/**`
+- `crystalserver/src/creatures/**`
+
+### CrystalServer persistence
+- `crystalserver/src/io/**`
+- `crystalserver/src/database/**`
+- `crystalserver/src/lua/**` (bindings if needed)
+
+### CrystalServer protocol/session
+- `crystalserver/src/server/network/protocol/**`
+- `crystalserver/src/protobuf/**` (if protocol schema path used)
+
+### CrystalServer content + delivery
+- `crystalserver/data/**`
+- `crystalserver/data-global/**`
+- `crystalserver/data-crystal/**`
 - `crystalserver/schema.sql`
-- `crystalserver/data/scripts/charm_system/init.lua`
-- `otclient/src/client/protocolgameparse.cpp`
-- `otclient/src/client/protocolgamesend.cpp`
-- `otclient/modules/game_charm_system/charm_system.lua`
-- `otclient/modules/game_charm_system/charm_system.otui`
-- `otclient/modules/game_charm_system/game_charm_system.otmod`
+- `crystalserver/docs/**`
 
-## Generated file tree
-```text
-crystalserver/src/game/systems/charm_system/charm_system_system.hpp
-crystalserver/src/game/systems/charm_system/charm_system_system.cpp
-crystalserver/src/io/charm_system/io_charm_system.hpp
-crystalserver/src/io/charm_system/io_charm_system.cpp
-crystalserver/src/server/network/protocol/protocolgame.cpp
-crystalserver/src/server/network/protocol/protocolgame.hpp
-crystalserver/schema.sql
-crystalserver/data/scripts/charm_system/init.lua
-otclient/src/client/protocolgameparse.cpp
-otclient/src/client/protocolgamesend.cpp
-otclient/modules/game_charm_system/charm_system.lua
-otclient/modules/game_charm_system/charm_system.otui
-otclient/modules/game_charm_system/game_charm_system.otmod
-```
+### OTClient engine + UI
+- `otclient/src/client/protocolgame*.cpp`
+- `otclient/src/client/game*.cpp`
+- `otclient/modules/**` (new/updated charm module)
+- `otclient/data/**` (styles/assets/locales if required)
 
-## Generated code skeleton examples
-### server_class
-```
-class CharmSystemSystem {
-public:
-  bool init();
-  void onKill(const std::shared_ptr<Player>& killer, const std::shared_ptr<Creature>& target);
-  void onLogin(const std::shared_ptr<Player>& player);
-};
-```
-### persistence
-```
-class IOCharmSystem {
-public:
-  static bool load(const std::shared_ptr<Player>& player);
-  static bool save(const std::shared_ptr<Player>& player);
-};
-```
-### opcode
-```
-constexpr uint8_t ClientOpcodeCharmSystemAction = 0xE0;
-constexpr uint8_t ServerOpcodeCharmSystemState = 0xE1;
-```
-### packet_handler
-```
-void ProtocolGame::parseCharmSystemAction(NetworkMessage& msg);
-void ProtocolGame::sendCharmSystemState(const std::shared_ptr<Player>& player);
-```
-### sql
-```
-CREATE TABLE IF NOT EXISTS player_charm_system (
-  player_id INT UNSIGNED NOT NULL,
-  charm_id SMALLINT UNSIGNED NOT NULL,
-  value BIGINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (player_id, charm_id)
-);
-```
-### storage
-```
-Storage.CharmSystem = {
-  Version = 93000,
-  Points = 93001,
-  UnlockBase = 93100
-}
-```
-### client_module
-```
-function init()
-  connect(g_game, { onGameStart = refreshCharmSystem, onGameEnd = clearCharmSystem })
-end
-```
+## Governance Chain
+1. Domain implementation owners execute scoped tasks.
+2. Security + Performance specialists audit high-risk surfaces.
+3. Code Review Guardian validates boundaries, tests, and evidence.
+4. Project Architect resolves blockers and final cross-domain arbitration.
 
-## Validation checklist
-- [ ] ownership --strict
-- [ ] deps --strict
-- [ ] impact --files <changed files>
-- [ ] drift --baseline agents/automation/baseline.json --strict
-- [ ] report
-- [ ] CrystalServer build/tests
-- [ ] OTClient build/tests
+## Risk Classification
+**High** (can elevate to Critical if protocol + schema migration + combat path all change in one PR)
 
-## Governance chain
-1. System Orchestrator
-1. Domain Owners
-1. Security/Performance Auditors
-1. Code Review Guardian
-1. Project Architect
+### Risk drivers
+- Combat hot path mutations (performance-sensitive).
+- New player progression persistence fields (data integrity risk).
+- Protocol synchronization and client/server compatibility risk.
+- Potential exploit surface in unlock/action endpoints.
+
+## Implementation Roadmap
+### Phase 0 — Architecture split and contracts
+- Define charm domain contracts (events, points, unlock semantics, sync model).
+- Freeze interfaces between gameplay, persistence, and protocol.
+
+### Phase 1 — Server model + persistence skeleton
+- Add persistence model fields and migration path.
+- Implement load/save behavior with backward compatibility defaults.
+
+### Phase 2 — Gameplay runtime integration
+- Implement charm effects entry points in combat/kill flows.
+- Add bounded execution hooks to avoid per-hit heavy script overhead.
+
+### Phase 3 — Datapack definitions and balance
+- Add charm metadata/configuration and script-level behavior tables.
+- Validate data references and fallback behavior for missing entries.
+
+### Phase 4 — Protocol + client integration
+- Add server send/client parse sync packets.
+- Add client actions for unlock/config and error handling paths.
+
+### Phase 5 — UI module delivery
+- Implement charm UI, states, lock/unlock UX, and refresh triggers.
+- Add localization and optional visual assets.
+
+### Phase 6 — Hardening and release
+- Security audit, performance sampling, migration rollback checks.
+- Documentation updates and release compatibility notes.
+
+## Cross-Layer Checklist
+- [ ] Server gameplay applies charm effects deterministically.
+- [ ] Persistence stores/reloads charm state losslessly.
+- [ ] Protocol packets are version-compatible and feature-gated.
+- [ ] Client parser tolerates unsupported/unknown charm payloads.
+- [ ] UI handles offline/partial sync/error states.
+- [ ] Datapack entries validated (no dangling IDs/references).
+- [ ] Schema and migration order validated in clean + upgrade scenarios.
+
+## Validation Steps
+1. `python agents/tools/architecture_guard.py ownership --strict`
+2. `python agents/tools/architecture_guard.py deps --strict`
+3. `python agents/tools/architecture_guard.py impact --files <changed files...>`
+4. `python agents/tools/architecture_guard.py drift --baseline agents/automation/baseline.json --strict`
+5. `python agents/tools/architecture_guard.py report`
+6. Domain test suites/build checks for CrystalServer + OTClient + website compatibility surface (if schema exposed).
+
+## Required Approvals
+- CrystalServer Gameplay Runtime owner
+- CrystalServer Persistence Scripting owner
+- CrystalServer Network Session owner
+- OTClient Engine Runtime owner
+- OTClient UI Modules owner
+- CrystalServer Data Gameplay owner
+- Code Review Guardian
+- Security Auditor (mandatory)
+- Performance Auditor (mandatory)
+- Project Architect (mandatory if risk = Critical)
+
+## Incomplete-Implementation Guards
+Feature is **NOT complete** until all are true:
+- Persistence migration + rollback verified.
+- Client/server protocol sync verified on supported versions.
+- Gameplay effect correctness validated under combat scenarios.
+- Ownership/deps/drift/report checks green.
+- Required approvals collected and recorded.

@@ -31,20 +31,12 @@ agents/
     governance-weakness-and-redesign.md
     simulation-test.md
     system-orchestrator-simulation-charm-system.md
-    system-orchestrator-simulation-daily-task-system.md
   automation/
     ownership_rules.json
     baseline.json
     README.md
-  blueprints/
-    gameplay-system-blueprint.md
-    persistent-system-blueprint.md
-    protocol-extension-blueprint.md
-    otclient-ui-module-blueprint.md
-    hybrid-feature-blueprint.md
   tools/
     architecture_guard.py
-    system_orchestrator.py
   ci/
     github-actions-architecture-validation.yml
 ```
