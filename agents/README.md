@@ -29,6 +29,14 @@ agents/
     coupling-risk-map.md
     governance-weakness-and-redesign.md
     simulation-test.md
+  automation/
+    ownership_rules.json
+    baseline.json
+    README.md
+  tools/
+    architecture_guard.py
+  ci/
+    github-actions-architecture-validation.yml
 ```
 
 ## Single-Owner Partition Rules

@@ -1,0 +1,125 @@
+{
+  "rules": [
+    {"pattern": "crystalserver/src/server/**", "agent": "crystalserver-network-session"},
+    {"pattern": "crystalserver/src/security/**", "agent": "crystalserver-network-session"},
+    {"pattern": "crystalserver/src/protobuf/**", "agent": "crystalserver-network-session"},
+    {"pattern": "crystalserver/src/main.cpp", "agent": "crystalserver-network-session"},
+    {"pattern": "crystalserver/src/crystalserver.cpp", "agent": "crystalserver-network-session"},
+    {"pattern": "crystalserver/src/crystalserver.hpp", "agent": "crystalserver-network-session"},
+
+    {"pattern": "crystalserver/src/game/**", "agent": "crystalserver-gameplay-runtime"},
+    {"pattern": "crystalserver/src/creatures/**", "agent": "crystalserver-gameplay-runtime"},
+    {"pattern": "crystalserver/src/items/**", "agent": "crystalserver-gameplay-runtime"},
+    {"pattern": "crystalserver/src/map/**", "agent": "crystalserver-gameplay-runtime"},
+    {"pattern": "crystalserver/src/enums/**", "agent": "crystalserver-gameplay-runtime"},
+    {"pattern": "crystalserver/src/declarations.hpp", "agent": "crystalserver-gameplay-runtime"},
+    {"pattern": "crystalserver/src/core.hpp", "agent": "crystalserver-gameplay-runtime"},
+
+    {"pattern": "crystalserver/src/database/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/io/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/lua/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/account/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/kv/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/config/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/lib/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/utils/**", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/pch.cpp", "agent": "crystalserver-persistence-scripting"},
+    {"pattern": "crystalserver/src/pch.hpp", "agent": "crystalserver-persistence-scripting"},
+
+    {"pattern": "crystalserver/data/**", "agent": "crystalserver-data-gameplay"},
+    {"pattern": "crystalserver/data-crystal/**", "agent": "crystalserver-data-gameplay"},
+    {"pattern": "crystalserver/data-global/**", "agent": "crystalserver-data-gameplay"},
+    {"pattern": "crystalserver/**", "agent": "crystalserver-platform-delivery"},
+
+    {"pattern": "otclient/src/**", "agent": "otclient-engine-runtime"},
+    {"pattern": "otclient/modules/**", "agent": "otclient-ui-modules"},
+    {"pattern": "otclient/mods/**", "agent": "otclient-ui-modules"},
+    {"pattern": "otclient/init.lua", "agent": "otclient-ui-modules"},
+    {"pattern": "otclient/meta.lua", "agent": "otclient-ui-modules"},
+    {"pattern": "otclient/otclientrc.lua", "agent": "otclient-ui-modules"},
+    {"pattern": "otclient/**", "agent": "otclient-assets-distribution"},
+
+    {"pattern": "website/system/**", "agent": "website-application-backoffice"},
+    {"pattern": "website/admin/**", "agent": "website-application-backoffice"},
+    {"pattern": "website/install/**", "agent": "website-application-backoffice"},
+    {"pattern": "website/plugins/**", "agent": "website-application-backoffice"},
+    {"pattern": "website/payments/**", "agent": "website-application-backoffice"},
+    {"pattern": "website/*.php", "agent": "website-application-backoffice"},
+    {"pattern": "website/VERSION", "agent": "website-application-backoffice"},
+    {"pattern": "website/release.sh", "agent": "website-application-backoffice"},
+    {"pattern": "website/nginx-sample.conf", "agent": "website-application-backoffice"},
+    {"pattern": "website/README.md", "agent": "website-application-backoffice"},
+    {"pattern": "website/CHANGELOG.md", "agent": "website-application-backoffice"},
+    {"pattern": "website/CREDITS", "agent": "website-application-backoffice"},
+    {"pattern": "website/CONTRIBUTORS.txt", "agent": "website-application-backoffice"},
+    {"pattern": "website/LICENSE", "agent": "website-application-backoffice"},
+    {"pattern": "website/.editorconfig", "agent": "website-application-backoffice"},
+    {"pattern": "website/.gitattributes", "agent": "website-application-backoffice"},
+    {"pattern": "website/.gitignore", "agent": "website-application-backoffice"},
+
+    {"pattern": "website/templates/**", "agent": "website-presentation-assets"},
+    {"pattern": "website/images/**", "agent": "website-presentation-assets"},
+    {"pattern": "website/tools/**", "agent": "website-presentation-assets"},
+    {"pattern": "website/robots.txt", "agent": "website-presentation-assets"},
+    {"pattern": "website/.htaccess.dist", "agent": "website-presentation-assets"},
+
+    {"pattern": "website/node_modules/**", "agent": "website-tooling-thirdparty"},
+    {"pattern": "website/package.json", "agent": "website-tooling-thirdparty"},
+    {"pattern": "website/package-lock.json", "agent": "website-tooling-thirdparty"},
+    {"pattern": "website/.prettier*", "agent": "website-tooling-thirdparty"},
+    {"pattern": "website/.stylelintrc", "agent": "website-tooling-thirdparty"},
+    {"pattern": "website/.github/**", "agent": "website-tooling-thirdparty"},
+
+    {"pattern": "agents/**", "agent": "project-architect"}
+  ],
+  "forbidden_domain_includes": [
+    {"from": "crystalserver-network-session", "to": "crystalserver-data-gameplay", "reason": "Network edge cannot include datapack content directly."},
+    {"from": "otclient-ui-modules", "to": "website-application-backoffice", "reason": "Client UI modules must not depend on website backend code."},
+    {"from": "website-application-backoffice", "to": "crystalserver-gameplay-runtime", "reason": "Website cannot include C++ gameplay runtime internals."}
+  ],
+  "forbidden_symbol_calls": [
+    {
+      "domain": "crystalserver-network-session",
+      "pattern": "IOLoginData::savePlayer\\s*\\(",
+      "reason": "Network layer must not persist player state directly."
+    },
+    {
+      "domain": "otclient-ui-modules",
+      "pattern": "g_http\\.",
+      "reason": "UI modules should use sanctioned game/service APIs, not raw HTTP globals."
+    }
+  ],
+  "security_sensitive_patterns": [
+    "crystalserver/src/server/network/protocol/**",
+    "crystalserver/src/io/**",
+    "website/admin/**",
+    "website/system/**"
+  ],
+  "performance_hot_patterns": [
+    "crystalserver/src/game/**",
+    "crystalserver/src/creatures/**",
+    "crystalserver/src/server/network/protocol/**",
+    "otclient/src/client/**",
+    "otclient/modules/game_interface/**"
+  ],
+  "agent_reviewers": {
+    "project-architect": ["@project-architect"],
+    "crystalserver-network-session": ["@cs-network"],
+    "crystalserver-gameplay-runtime": ["@cs-gameplay"],
+    "crystalserver-persistence-scripting": ["@cs-persistence"],
+    "crystalserver-data-gameplay": ["@cs-data"],
+    "crystalserver-platform-delivery": ["@cs-platform"],
+    "otclient-engine-runtime": ["@otc-engine"],
+    "otclient-ui-modules": ["@otc-ui"],
+    "otclient-assets-distribution": ["@otc-assets"],
+    "website-application-backoffice": ["@web-backoffice"],
+    "website-presentation-assets": ["@web-presentation"],
+    "website-tooling-thirdparty": ["@web-tooling"]
+  },
+  "escalation_chain": [
+    "code-review-guardian",
+    "security-auditor",
+    "performance-auditor",
+    "project-architect"
+  ]
+}

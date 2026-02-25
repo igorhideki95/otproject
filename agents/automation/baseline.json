@@ -1,0 +1,45 @@
+{
+  "uncovered": 0,
+  "agent_file_count": {
+    "project-architect": 27,
+    "crystalserver-platform-delivery": 112,
+    "crystalserver-data-gameplay": 7838,
+    "crystalserver-persistence-scripting": 261,
+    "crystalserver-gameplay-runtime": 171,
+    "crystalserver-network-session": 33,
+    "otclient-assets-distribution": 1767,
+    "otclient-ui-modules": 797,
+    "otclient-engine-runtime": 394,
+    "website-application-backoffice": 1882,
+    "website-tooling-thirdparty": 6140,
+    "website-presentation-assets": 4123
+  },
+  "agent_line_count": {
+    "project-architect": 2254,
+    "crystalserver-platform-delivery": 13178,
+    "crystalserver-data-gameplay": 1465377,
+    "crystalserver-persistence-scripting": 60803,
+    "crystalserver-gameplay-runtime": 85777,
+    "crystalserver-network-session": 15804,
+    "otclient-assets-distribution": 295532,
+    "otclient-ui-modules": 189556,
+    "otclient-engine-runtime": 98346,
+    "website-application-backoffice": 219517,
+    "website-tooling-thirdparty": 405769,
+    "website-presentation-assets": 549358
+  },
+  "cross_agent_coupling_edges": {
+    "crystalserver-platform-delivery->crystalserver-persistence-scripting": 4
+  },
+  "security_sensitive_file_count": {
+    "crystalserver-persistence-scripting": 28,
+    "crystalserver-network-session": 8,
+    "website-application-backoffice": 1779
+  },
+  "performance_hot_file_count": {
+    "crystalserver-gameplay-runtime": 97,
+    "crystalserver-network-session": 8,
+    "otclient-ui-modules": 8,
+    "otclient-engine-runtime": 103
+  }
+}
