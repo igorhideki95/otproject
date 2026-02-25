@@ -11,6 +11,7 @@ agents/
     refactoring-specialist.md
     security-auditor.md
     performance-auditor.md
+    system-orchestrator.md
   domains/
     crystalserver-network-session.md
     crystalserver-gameplay-runtime.md
@@ -29,6 +30,7 @@ agents/
     coupling-risk-map.md
     governance-weakness-and-redesign.md
     simulation-test.md
+    system-orchestrator-simulation-charm-system.md
   automation/
     ownership_rules.json
     baseline.json

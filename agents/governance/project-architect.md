@@ -21,6 +21,7 @@ Whole-repository architecture governance, ownership partition integrity, and cro
 - `agents/governance/refactoring-specialist.md`
 - `agents/governance/security-auditor.md`
 - `agents/governance/performance-auditor.md`
+- `agents/governance/system-orchestrator.md`
 - `agents/domains/*.md`
 
 ## Common Dependency Agents
@@ -28,6 +29,7 @@ Whole-repository architecture governance, ownership partition integrity, and cro
 - Security Auditor
 - Performance Auditor
 - Refactoring Specialist
+- System Orchestrator
 - All domain agents
 
 ## Modification Rules
