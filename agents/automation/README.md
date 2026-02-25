@@ -33,11 +33,6 @@ python agents/tools/architecture_guard.py drift --write-baseline --baseline agen
 python agents/tools/architecture_guard.py report
 ```
 
-# Intelligent orchestration (feature planning + boilerplate)
-python agents/tools/system_orchestrator.py --request "Create Charm System"
-python agents/tools/system_orchestrator.py --request "Create Charm System" --json
-python agents/tools/system_orchestrator.py --request "Create Charm System" --output agents/validation/system-orchestrator-simulation-charm-system.md
-
 ## CI-friendly output
 All commands emit JSON to stdout. Strict mode exits with non-zero status when violations are detected.
 
