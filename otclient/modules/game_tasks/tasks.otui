@@ -83,7 +83,7 @@ SelectionButton < Panel
 MainWindow
   size: 549 509
   id: tasksWindow
-  !text: tr('Tasks')
+  !text: tr('Daily Tasks')
 
   @onEnter: modules.game_tasks.toggleWindow()
   @onEscape: modules.game_tasks.toggleWindow()
@@ -107,7 +107,7 @@ MainWindow
     anchors.top: listSearch.bottom
     anchors.left: listSearch.left
     anchors.right: parent.right
-    anchors.bottom: separator.top
+    anchors.bottom: summaryPanel.top
     margin-top: 5
     margin-bottom: 5
     image-source: /images/ui/panel_flat
@@ -128,6 +128,44 @@ MainWindow
     anchors.bottom: prev.bottom
     step: 80
     pixel-scroll: true
+
+
+  MiniPanel2
+    id: summaryPanel
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: separator.top
+    margin-bottom: 5
+    height: 82
+    text: Daily Progress
+
+    Label
+      id: rankName
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-top: 1
+      text: Rank: Bronze Hunter
+
+    Label
+      id: rankFrags
+      anchors.top: rankName.bottom
+      anchors.left: parent.left
+      margin-top: 1
+      text: Task frags: 0
+
+    Label
+      id: nextRank
+      anchors.top: rankFrags.bottom
+      anchors.left: parent.left
+      margin-top: 1
+      text: Next rank: Silver Hunter (100 frags left)
+
+    Label
+      id: dailyReset
+      anchors.top: nextRank.bottom
+      anchors.left: parent.left
+      margin-top: 1
+      text: Daily reset in: 00h 00m
 
   HorizontalSeparator
     id: separator
