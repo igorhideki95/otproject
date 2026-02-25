@@ -19,7 +19,8 @@ CrystalServer content layer: Lua scripts, XML definitions, monster/npc/raid/worl
 - `crystalserver/data-crystal/**`
 
 ## Common Dependency Agents
-- CrystalServer Engine Runtime Agent
+- CrystalServer Gameplay Runtime Agent
+- CrystalServer Persistence Scripting Agent
 - CrystalServer Platform Delivery Agent
 - Security Auditor
 - Performance Auditor

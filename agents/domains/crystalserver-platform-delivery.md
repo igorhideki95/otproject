@@ -42,7 +42,9 @@ CrystalServer build, packaging, configuration, schema, tests, metrics, documenta
 - `crystalserver/gdb_debug`
 
 ## Common Dependency Agents
-- CrystalServer Engine Runtime Agent
+- CrystalServer Network Session Agent
+- CrystalServer Gameplay Runtime Agent
+- CrystalServer Persistence Scripting Agent
 - CrystalServer Data Gameplay Agent
 - Website Application Backoffice Agent (DB compatibility)
 - Code Review Guardian

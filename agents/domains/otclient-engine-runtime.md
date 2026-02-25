@@ -19,7 +19,8 @@ OTClient native engine and protocol runtime in C++ under `otclient/src`, includi
 ## Common Dependency Agents
 - OTClient UI Modules Agent
 - OTClient Assets Distribution Agent
-- CrystalServer Engine Runtime Agent (protocol contracts)
+- CrystalServer Network Session Agent (protocol contracts)
+- CrystalServer Gameplay Runtime Agent (world-state packet semantics)
 - Performance Auditor
 
 ## Modification Rules
