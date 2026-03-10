@@ -193,8 +193,6 @@ function playerLoginGlobal.onLogin(player)
 	player:registerEvent("DropLoot")
 	player:registerEvent("BossParticipation")
 	player:registerEvent("UpdatePlayerOnAdvancedLevel")
-	player:registerEvent("DailyTaskKill")
-	player:registerEvent("DailyTaskExtendedOpcode")
 	return true
 end
 
