@@ -25,12 +25,16 @@ function callback.monsterOnDropLoot(monster, corpse)
 	local preyActivators = {}
 	for _, participant in ipairs(participants) do
 		local participantChance = participant:getPreyLootPercentage(mType:raceId())
-		table.insert(preyActivators, participant:getName())
-		preyChance = preyChance + participantChance
+		if participantChance > 0 then
+			table.insert(preyActivators, participant:getName())
+			preyChance = preyChance + participantChance
+		end
 	end
 	if #preyActivators > 0 then
 		local numActivators = #preyActivators
 		preyChance = preyChance / numActivators ^ configManager.getFloat(configKeys.PARTY_SHARE_LOOT_BOOSTS_DIMINISHING_FACTOR)
+	else
+		return
 	end
 	if math.random(1, 100) > preyChance then
 		return

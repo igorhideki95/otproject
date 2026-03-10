@@ -1,0 +1,345 @@
+-- HelperHealingWindow
+MainWindow
+  id: helperHealingWindow
+  !text: tr('Auto Healing Helper')
+  size: 310 240
+  visible: false
+  draggable: true
+  @onEscape: HelperHealing.toggle()
+
+  -- Tabs
+  TabBar
+    id: helperTabBar
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 20
+    height: 26
+
+  -- Tab content panel
+  Panel
+    id: helperTabContent
+    anchors.top: helperTabBar.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: statusBar.top
+    margin-top: 4
+    margin-bottom: 4
+
+  -- Status bar at bottom
+  Panel
+    id: statusBar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: buttonBar.top
+    height: 22
+    margin-bottom: 4
+
+    Label
+      id: statusLabel
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      font: verdana-11px-antialised
+      color: #aaaaaa
+      !text: tr('Helper Status:')
+
+    Label
+      id: statusValueLabel
+      anchors.left: statusLabel.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      font: verdana-11px-antialised
+      color: #00cc00
+      text: Enabled
+
+    CheckBox
+      id: enabledCheckBox
+      anchors.left: statusValueLabel.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 2
+      checked: true
+      @onCheckChange: HelperHealing.onToggleEnabled(self:isChecked())
+
+    Label
+      id: setKeyLabel
+      anchors.left: enabledCheckBox.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 8
+      font: verdana-11px-antialised
+      color: #aaaaaa
+      !text: tr('Set Key')
+      @onClick: HelperHealing.openSetKey()
+
+  -- Bottom button bar
+  Panel
+    id: buttonBar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    height: 28
+    margin-bottom: 2
+
+    Button
+      id: statsButton
+      !text: tr('Helper Stats')
+      anchors.right: closeButton.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 6
+      width: 90
+      height: 20
+      @onClick: HelperHealing.openStats()
+
+    Button
+      id: closeButton
+      !text: tr('Close')
+      anchors.right: parent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-right: 4
+      width: 52
+      height: 20
+      @onClick: HelperHealing.toggle()
+
+-- HealingTab (panel loaded inside helperTabContent)
+Panel
+  id: healingTabPanel
+  anchors.fill: parent
+
+  -- Column headers
+  Label
+    id: spellHealLabel
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-left: 10
+    margin-top: 6
+    font: verdana-11px-antialised
+    color: #ffffff
+    !text: tr('Spell Healing')
+
+  Label
+    id: potionHealLabel
+    anchors.top: parent.top
+    anchors.left: parent.horizontalCenter
+    margin-top: 6
+    font: verdana-11px-antialised
+    color: #ffffff
+    !text: tr('Potion Healing')
+
+  -- Row 1: Primary heal (Spell + Potion)
+  Panel
+    id: row1Panel
+    anchors.top: spellHealLabel.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 32
+    margin-top: 4
+
+    -- Spell 1 icon
+    ItemBox
+      id: spell1Icon
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      size: 28 28
+      @onMouseRelease: HelperHealing.onSpell1IconClick(self, mousePos, mouseButton)
+
+    -- Spell 1 percent spinner
+    SpinBox
+      id: spell1Percent
+      anchors.left: spell1Icon.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 56
+      height: 22
+      minimum: 1
+      maximum: 100
+      value: 70
+      @onValueChange: HelperHealing.onSpell1PercentChange(value)
+
+    -- Spell 1 info button
+    Button
+      id: spell1InfoBtn
+      anchors.left: spell1Percent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 2
+      size: 16 16
+      text: i
+      font: verdana-11px-antialised
+      @onClick: HelperHealing.openSpell1Info()
+
+    -- Potion 1 icon
+    ItemBox
+      id: potion1Icon
+      anchors.left: parent.horizontalCenter
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 0
+      size: 28 28
+      @onMouseRelease: HelperHealing.onPotion1IconClick(self, mousePos, mouseButton)
+
+    -- Potion 1 percent spinner
+    SpinBox
+      id: potion1Percent
+      anchors.left: potion1Icon.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 56
+      height: 22
+      minimum: 1
+      maximum: 100
+      value: 70
+      @onValueChange: HelperHealing.onPotion1PercentChange(value)
+
+    -- Potion 1 info button
+    Button
+      id: potion1InfoBtn
+      anchors.left: potion1Percent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 2
+      size: 16 16
+      text: i
+      font: verdana-11px-antialised
+      @onClick: HelperHealing.openPotion1Info()
+
+  -- Row 2: Secondary heal
+  Panel
+    id: row2Panel
+    anchors.top: row1Panel.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 32
+    margin-top: 2
+
+    -- Spell 2 icon
+    ItemBox
+      id: spell2Icon
+      anchors.left: parent.left
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 6
+      size: 28 28
+      @onMouseRelease: HelperHealing.onSpell2IconClick(self, mousePos, mouseButton)
+
+    -- Spell 2 percent spinner
+    SpinBox
+      id: spell2Percent
+      anchors.left: spell2Icon.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 56
+      height: 22
+      minimum: 1
+      maximum: 100
+      value: 40
+      @onValueChange: HelperHealing.onSpell2PercentChange(value)
+
+    -- Spell 2 info button
+    Button
+      id: spell2InfoBtn
+      anchors.left: spell2Percent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 2
+      size: 16 16
+      text: i
+      font: verdana-11px-antialised
+      @onClick: HelperHealing.openSpell2Info()
+
+    -- Potion 2 icon
+    ItemBox
+      id: potion2Icon
+      anchors.left: parent.horizontalCenter
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 0
+      size: 28 28
+      @onMouseRelease: HelperHealing.onPotion2IconClick(self, mousePos, mouseButton)
+
+    -- Potion 2 percent spinner
+    SpinBox
+      id: potion2Percent
+      anchors.left: potion2Icon.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 4
+      width: 56
+      height: 22
+      minimum: 1
+      maximum: 100
+      value: 40
+      @onValueChange: HelperHealing.onPotion2PercentChange(value)
+
+    -- Potion 2 info button
+    Button
+      id: potion2InfoBtn
+      anchors.left: potion2Percent.right
+      anchors.verticalCenter: parent.verticalCenter
+      margin-left: 2
+      size: 16 16
+      text: i
+      font: verdana-11px-antialised
+      @onClick: HelperHealing.openPotion2Info()
+
+-- StatsWindow
+Window
+  id: helperStatsWindow
+  !text: tr('Healing Stats')
+  size: 240 180
+  visible: false
+  draggable: true
+  @onEscape: HelperHealing.closeStats()
+
+  Label
+    id: statsTotalHeals
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 26
+    margin-left: 10
+    font: verdana-11px-antialised
+    color: #cccccc
+    text: Total Heals: 0
+
+  Label
+    id: statsSpellHeals
+    anchors.top: statsTotalHeals.bottom
+    anchors.left: parent.left
+    margin-left: 10
+    margin-top: 4
+    font: verdana-11px-antialised
+    color: #66aaff
+    text: Spell Heals: 0
+
+  Label
+    id: statsPotionHeals
+    anchors.top: statsSpellHeals.bottom
+    anchors.left: parent.left
+    margin-left: 10
+    margin-top: 4
+    font: verdana-11px-antialised
+    color: #ff9933
+    text: Potion Heals: 0
+
+  Label
+    id: statsSession
+    anchors.top: statsPotionHeals.bottom
+    anchors.left: parent.left
+    margin-left: 10
+    margin-top: 4
+    font: verdana-11px-antialised
+    color: #aaaaaa
+    text: Session: 0s
+
+  Button
+    !text: tr('Reset')
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    margin-left: 10
+    margin-bottom: 6
+    width: 52
+    height: 20
+    @onClick: HelperHealing.resetStats()
+
+  Button
+    !text: tr('Close')
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 10
+    margin-bottom: 6
+    width: 52
+    height: 20
+    @onClick: HelperHealing.closeStats()

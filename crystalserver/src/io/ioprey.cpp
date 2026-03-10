@@ -122,15 +122,19 @@ void PreySlot::reloadMonsterGrid(std::vector<uint16_t> blackList, uint32_t level
 		} else if (stageOne != 0 && mtype->info.bestiaryStars <= 1) {
 			raceIdList.push_back(raceId);
 			--stageOne;
+			tries = 0;
 		} else if (stageTwo != 0 && mtype->info.bestiaryStars == 2) {
 			raceIdList.push_back(raceId);
 			--stageTwo;
+			tries = 0;
 		} else if (stageThree != 0 && mtype->info.bestiaryStars == 3) {
 			raceIdList.push_back(raceId);
 			--stageThree;
+			tries = 0;
 		} else if (stageFour != 0 && mtype->info.bestiaryStars >= 4) {
 			raceIdList.push_back(raceId);
 			--stageFour;
+			tries = 0;
 		} else if (tries >= 10) {
 			raceIdList.push_back(raceId);
 			tries = 0;
@@ -203,15 +207,19 @@ void TaskHuntingSlot::reloadMonsterGrid(std::vector<uint16_t> blackList, uint32_
 		} else if (stageOne != 0 && mtype->info.bestiaryStars <= 1) {
 			raceIdList.push_back(raceId);
 			--stageOne;
+			tries = 0;
 		} else if (stageTwo != 0 && mtype->info.bestiaryStars == 2) {
 			raceIdList.push_back(raceId);
 			--stageTwo;
+			tries = 0;
 		} else if (stageThree != 0 && mtype->info.bestiaryStars == 3) {
 			raceIdList.push_back(raceId);
 			--stageThree;
+			tries = 0;
 		} else if (stageFour != 0 && mtype->info.bestiaryStars >= 4) {
 			raceIdList.push_back(raceId);
 			--stageFour;
+			tries = 0;
 		} else if (tries >= 10) {
 			raceIdList.push_back(raceId);
 			tries = 0;
@@ -274,21 +282,21 @@ void IOPrey::checkPlayerPreys(const std::shared_ptr<Player> &player, uint8_t amo
 						slot->reloadBonusType();
 						slot->reloadBonusValue();
 						slot->bonusTimeLeft = static_cast<uint16_t>(g_configManager().getNumber(PREY_BONUS_TIME));
-						player->sendTextMessage(MESSAGE_STATUS, "Your prey bonus type and time has been succesfully reseted.");
+						player->sendTextMessage(MESSAGE_STATUS, "Your prey bonus type and time has been successfully reset.");
 						player->reloadPreySlot(static_cast<PreySlot_t>(slotId));
 						continue;
 					}
 
-					player->sendTextMessage(MESSAGE_STATUS, "You don't have enought prey cards to enable automatic reroll when your slot expire.");
+					player->sendTextMessage(MESSAGE_STATUS, "You don't have enough prey cards to enable automatic reroll when your slot expires.");
 				} else if (slot->option == PreyOption_Locked) {
 					if (player->usePreyCards(static_cast<uint16_t>(g_configManager().getNumber(PREY_SELECTION_LIST_PRICE)))) {
 						slot->bonusTimeLeft = static_cast<uint16_t>(g_configManager().getNumber(PREY_BONUS_TIME));
-						player->sendTextMessage(MESSAGE_STATUS, "Your prey bonus time has been succesfully reseted.");
+						player->sendTextMessage(MESSAGE_STATUS, "Your prey bonus time has been successfully reset.");
 						player->reloadPreySlot(static_cast<PreySlot_t>(slotId));
 						continue;
 					}
 
-					player->sendTextMessage(MESSAGE_STATUS, "You don't have enought prey cards to lock monster and bonus when the slot expire.");
+					player->sendTextMessage(MESSAGE_STATUS, "You don't have enough prey cards to lock monster and bonus when the slot expires.");
 				} else {
 					slot->reloadMonsterGrid(player->getPreyBlackList(), player->getLevel());
 					player->sendTextMessage(MESSAGE_STATUS, "Your prey bonus has expired.");
@@ -313,7 +321,7 @@ void IOPrey::parsePreyAction(const std::shared_ptr<Player> &player, PreySlot_t s
 
 	if (action == PreyAction_ListReroll) {
 		if (slot->freeRerollTimeStamp > OTSYS_TIME() && !g_game().removeMoney(player, player->getPreyRerollPrice(), 0, true)) {
-			player->sendMessageDialog("You don't have enought money to reroll the prey slot.");
+			player->sendMessageDialog("You don't have enough money to reroll the prey slot.");
 			return;
 		} else if (slot->freeRerollTimeStamp <= OTSYS_TIME()) {
 			slot->freeRerollTimeStamp = OTSYS_TIME() + g_configManager().getNumber(PREY_FREE_REROLL_TIME) * 1000;
@@ -328,7 +336,7 @@ void IOPrey::parsePreyAction(const std::shared_ptr<Player> &player, PreySlot_t s
 		slot->reloadMonsterGrid(player->getPreyBlackList(), player->getLevel());
 	} else if (action == PreyAction_ListAll_Cards) {
 		if (!player->usePreyCards(static_cast<uint16_t>(g_configManager().getNumber(PREY_SELECTION_LIST_PRICE)))) {
-			player->sendMessageDialog("You don't have enought prey cards to choose a monsters on the list.");
+			player->sendMessageDialog("You don't have enough prey cards to choose a monsters on the list.");
 			return;
 		}
 
@@ -365,7 +373,7 @@ void IOPrey::parsePreyAction(const std::shared_ptr<Player> &player, PreySlot_t s
 			player->sendMessageDialog("You don't have any active monster on this prey slot.");
 			return;
 		} else if (!player->usePreyCards(static_cast<uint16_t>(g_configManager().getNumber(PREY_BONUS_REROLL_PRICE)))) {
-			player->sendMessageDialog("You don't have enought prey cards to reroll this prey slot bonus type.");
+			player->sendMessageDialog("You don't have enough prey cards to reroll this prey slot bonus type.");
 			return;
 		}
 
@@ -394,10 +402,10 @@ void IOPrey::parsePreyAction(const std::shared_ptr<Player> &player, PreySlot_t s
 		slot->bonusTimeLeft = static_cast<uint16_t>(g_configManager().getNumber(PREY_BONUS_TIME));
 	} else if (action == PreyAction_Option) {
 		if (option == PreyOption_AutomaticReroll && player->getPreyCards() < static_cast<uint64_t>(g_configManager().getNumber(PREY_BONUS_REROLL_PRICE))) {
-			player->sendMessageDialog("You don't have enought prey cards to enable automatic reroll when your slot expire.");
+			player->sendMessageDialog("You don't have enough prey cards to enable automatic reroll when your slot expires.");
 			return;
 		} else if (option == PreyOption_Locked && player->getPreyCards() < static_cast<uint64_t>(g_configManager().getNumber(PREY_SELECTION_LIST_PRICE))) {
-			player->sendMessageDialog("You don't have enought prey cards to lock monster and bonus when the slot expire.");
+			player->sendMessageDialog("You don't have enough prey cards to lock monster and bonus when the slot expires.");
 			return;
 		}
 
@@ -424,7 +432,7 @@ void IOPrey::parseTaskHuntingAction(const std::shared_ptr<Player> &player, PreyS
 			player->sendMessageDialog(ss.str());
 			return;
 		} else if (slot->freeRerollTimeStamp > OTSYS_TIME() && !g_game().removeMoney(player, player->getTaskHuntingRerollPrice(), 0, true)) {
-			player->sendMessageDialog("You don't have enought money to reroll the task hunting slot.");
+			player->sendMessageDialog("You don't have enough money to reroll the task hunting slot.");
 			return;
 		} else if (slot->freeRerollTimeStamp <= OTSYS_TIME()) {
 			slot->freeRerollTimeStamp = OTSYS_TIME() + g_configManager().getNumber(TASK_HUNTING_FREE_REROLL_TIME) * 1000;
@@ -438,7 +446,7 @@ void IOPrey::parseTaskHuntingAction(const std::shared_ptr<Player> &player, PreyS
 		slot->reloadMonsterGrid(player->getTaskHuntingBlackList(), player->getLevel());
 	} else if (action == PreyTaskAction_RewardsReroll) {
 		if (!player->usePreyCards(static_cast<uint16_t>(g_configManager().getNumber(TASK_HUNTING_BONUS_REROLL_PRICE)))) {
-			player->sendMessageDialog("You don't have enought prey cards to reroll you task reward rarity.");
+			player->sendMessageDialog("You don't have enough prey cards to reroll your task reward rarity.");
 			return;
 		}
 
@@ -450,7 +458,7 @@ void IOPrey::parseTaskHuntingAction(const std::shared_ptr<Player> &player, PreyS
 			player->sendMessageDialog(ss.str());
 			return;
 		} else if (!player->usePreyCards(static_cast<uint16_t>(g_configManager().getNumber(TASK_HUNTING_SELECTION_LIST_PRICE)))) {
-			player->sendMessageDialog("You don't have enought prey cards to choose a creature on list for you task hunting slot.");
+			player->sendMessageDialog("You don't have enough prey cards to choose a creature on list for your task hunting slot.");
 			return;
 		}
 
@@ -485,7 +493,7 @@ void IOPrey::parseTaskHuntingAction(const std::shared_ptr<Player> &player, PreyS
 		}
 	} else if (action == PreyTaskAction_Cancel) {
 		if (!g_game().removeMoney(player, player->getTaskHuntingRerollPrice(), 0, true)) {
-			player->sendMessageDialog("You don't have enought money to cancel your current task hunting.");
+			player->sendMessageDialog("You don't have enough money to cancel your current task hunting.");
 			return;
 		}
 

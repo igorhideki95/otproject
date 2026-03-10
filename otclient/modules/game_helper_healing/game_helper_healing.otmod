@@ -1,0 +1,10 @@
+Module
+  name: game_helper_healing
+  description: Auto Healing Helper - automatically uses spells and potions based on HP thresholds
+  author: OTCHelper
+  website: https://github.com/mehah/otclient
+  sandboxed: true
+  scripts: [ helper_healing ]
+  dependencies: [ game_interface, game_hotkeys ]
+  @onLoad: HelperHealing.init()
+  @onUnload: HelperHealing.terminate()
