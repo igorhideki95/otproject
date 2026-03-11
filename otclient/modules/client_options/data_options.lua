@@ -152,11 +152,11 @@ return {
             end, 50)
         end
     },
-    returnDisablesChat                = false,
+    returnDisablesChat                = true,
     smartWalk                         = false,
     autoChaseOverride                 = true,
-    talkOnRightClick                  = false,
-    moveStack                         = false,
+    talkOnRightClick                  = true,
+    moveStack                         = true,
     showStatusMessagesInConsole       = true,
     showEventMessagesInConsole        = true,
     showInfoMessagesInConsole         = true,

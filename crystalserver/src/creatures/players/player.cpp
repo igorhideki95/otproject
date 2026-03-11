@@ -3286,7 +3286,7 @@ void Player::addItemImbuementStats(const Imbuement* imbuement) {
 	// Add imbuement capacity
 	if (imbuement->capacity != 0) {
 		requestUpdate = true;
-		bonusCapacity = (capacity * imbuement->capacity) / 100;
+		bonusCapacityPercent += imbuement->capacity;
 	}
 
 	// Add imbuement deflect conditions
@@ -3330,7 +3330,7 @@ void Player::removeItemImbuementStats(const Imbuement* imbuement) {
 	// Remove imbuement capacity
 	if (imbuement->capacity != 0) {
 		requestUpdate = true;
-		bonusCapacity = 0;
+		bonusCapacityPercent -= imbuement->capacity;
 	}
 
 	// Remove imbuement deflect conditions
@@ -5476,6 +5476,7 @@ uint32_t Player::getCapacity() const {
 	if (hasFlag(PlayerFlags_t::HasInfiniteCapacity)) {
 		return std::numeric_limits<uint32_t>::max();
 	}
+	uint32_t bonusCapacity = (capacity * bonusCapacityPercent) / 100;
 	return capacity + bonusCapacity + varStats[STAT_CAPACITY] + (m_wheelPlayer->getStat(WheelStat_t::CAPACITY) * 100);
 }
 
@@ -5483,7 +5484,7 @@ uint32_t Player::getBonusCapacity() const {
 	if (hasFlag(PlayerFlags_t::CannotPickupItem) || hasFlag(PlayerFlags_t::HasInfiniteCapacity)) {
 		return std::numeric_limits<uint32_t>::max();
 	}
-	return bonusCapacity;
+	return (capacity * bonusCapacityPercent) / 100;
 }
 
 uint32_t Player::getFreeCapacity() const {

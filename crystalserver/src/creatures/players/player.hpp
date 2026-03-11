@@ -1718,7 +1718,7 @@ private:
 
 	uint32_t inventoryWeight = 0;
 	uint32_t capacity = 40000;
-	uint32_t bonusCapacity = 0;
+	uint32_t bonusCapacityPercent = 0;
 
 	std::bitset<CombatType_t::COMBAT_COUNT> m_damageImmunities;
 	std::bitset<ConditionType_t::CONDITION_COUNT> m_conditionImmunities;

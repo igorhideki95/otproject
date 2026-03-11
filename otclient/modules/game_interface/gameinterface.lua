@@ -950,11 +950,8 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
                 local playerPos = player:getPosition()
                 local npcPos = creatureThing:getPosition()
                 if playerPos.z == npcPos.z then
-                    local dist = math.max(math.abs(playerPos.x - npcPos.x), math.abs(playerPos.y - npcPos.y))
-                    if dist <= 3 then
-                        g_game.talk("hi")
-                        return true
-                    end
+                    g_game.talk("hi")
+                    return true
                 end
             end
         end
@@ -1029,11 +1026,8 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
                 local playerPos = player:getPosition()
                 local npcPos = creatureThing:getPosition()
                 if playerPos.z == npcPos.z then
-                    local dist = math.max(math.abs(playerPos.x - npcPos.x), math.abs(playerPos.y - npcPos.y))
-                    if dist <= 3 then
-                        g_game.talk("hi")
-                        return true
-                    end
+                    g_game.talk("hi")
+                    return true
                 end
             end
 
